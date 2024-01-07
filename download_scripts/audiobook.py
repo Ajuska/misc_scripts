@@ -10,6 +10,7 @@ import eyed3
 site_url = ''
 folder_name = "".title()
 book_name = folder_name.split('–')[-1].strip()
+book_author = folder_name.split('–')[0].strip()
 
 if not os.path.exists(folder_name):
     os.makedirs(folder_name)
@@ -30,6 +31,8 @@ while number:
         # add number to a file title in case it's missing
         audiofile = eyed3.load(file_path)
         audiofile.tag.title = f"{file_number} | {book_name}"
+        # audiofile.tag.artist = f"{book_author}"
+        # audiofile.tag.album = f"{book_name}"
         audiofile.tag.save()
 
         number +=1
