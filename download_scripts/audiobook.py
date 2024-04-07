@@ -28,11 +28,17 @@ while number:
         with open(file_path, "wb") as file:
             file.write(response.content)
 
-        # add number to a file title in case it's missing
-        audiofile = eyed3.load(file_path)
-        audiofile.tag.title = f"{file_number} | {book_name}"
-        # audiofile.tag.artist = f"{book_author}"
-        # audiofile.tag.album = f"{book_name}"
+        # add metadata to a file in case it's missing
+        # so it's displayed correctly in a player
+        title = f"{file_number} | {book_name}"
+        try:
+            audiofile = eyed3.load(file_path)
+            audiofile.tag.title = title
+        except AttributeError:
+            audiofile.initTag()
+            audiofile.tag.title = title
+        audiofile.tag.artist = book_author
+        audiofile.tag.album = book_name
         audiofile.tag.save()
 
         number +=1
